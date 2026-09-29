@@ -1,8 +1,5 @@
-                    // URL base de la API REST en Spring Boot
-                    
 const API_URL = "http://localhost:8080/api/puntos-criticos";
 
-// Datos de prueba iniciales si el backend aún no está activo
 let puntosCriticos = [
   {
     id: 1,
@@ -26,13 +23,11 @@ let puntosCriticos = [
 
 let filtroActual = 'Todos';
 
-// Inicializar íconos al cargar
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
     cargarPuntos();
 });
 
-// 1. OBTENER PUNTOS (GET)
 async function cargarPuntos() {
   try {
     const res = await fetch(API_URL);
@@ -45,7 +40,6 @@ async function cargarPuntos() {
   renderizarPuntos();
 }
 
-// 2. MOSTRAR EN EL HTML
 function renderizarPuntos() {
   const container = document.getElementById('puntosContainer');
   container.innerHTML = '';
@@ -109,7 +103,6 @@ function renderizarPuntos() {
   lucide.createIcons();
 }
 
-// 3. REGISTRAR PUNTO (POST)
 document.getElementById('reporteForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -145,7 +138,6 @@ document.getElementById('reporteForm').addEventListener('submit', async (e) => {
   renderizarPuntos();
 });
 
-// 4. CAMBIAR ESTADO (PUT)
 async function cambiarEstado(id, nuevoEstado) {
   try {
     await fetch(`${API_URL}/${id}/estado?estado=${nuevoEstado}`, { method: 'PUT' });
@@ -156,7 +148,6 @@ async function cambiarEstado(id, nuevoEstado) {
   renderizarPuntos();
 }
 
-// 5. ELIMINAR PUNTO (DELETE)
 async function eliminarPunto(id) {
   try {
     await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
@@ -166,7 +157,6 @@ async function eliminarPunto(id) {
   renderizarPuntos();
 }
 
-// FUNCIONES AUXILIARES
 function getBadgeSeveridad(nivel) {
   switch(nivel) {
     case 'Crítico': return '<span class="bg-red-100 text-red-800 text-xs font-semibold px-2 py-0.5 rounded">Crítico</span>';

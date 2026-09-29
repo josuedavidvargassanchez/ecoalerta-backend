@@ -67,10 +67,8 @@
       </form>
     </section>
 
-    <!-- COLUMNA DERECHA: TARJETAS Y LISTA DE PUNTOS -->
     <section class="lg:col-span-2 space-y-6">
-      
-      <!-- CONTADORES RÁPIDOS -->
+ 
       <div class="grid grid-cols-3 gap-4">
         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 text-center">
           <p class="text-xs text-gray-500 uppercase font-bold">Total Puntos</p>
@@ -86,7 +84,6 @@
         </div>
       </div>
 
-      <!-- SECCIÓN DE LISTADO Y FILTROS -->
       <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
@@ -94,7 +91,6 @@
             Puntos Críticos Registrados
           </h2>
 
-          <!-- FILTROS -->
           <div class="flex gap-2">
             <button onclick="filtrarPuntos('Todos')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700">Todos</button>
             <button onclick="filtrarPuntos('Pendiente')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800">Pendientes</button>
@@ -102,9 +98,7 @@
           </div>
         </div>
 
-        <!-- LISTA CONTENEDORA -->
         <div id="puntosContainer" class="space-y-4">
-          <!-- Carga dinámicamente -->
         </div>
       </div>
     </section>
