@@ -1,7 +1,8 @@
 package com.ecoalerta.backend.models;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "puntos_criticos")
@@ -11,36 +12,38 @@ public class PuntoCritico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String barrio;
-    private String direccionReferencia;
-    private String descripcion;
-    private String nivelSeveridad;
-    private String estado;
-    private LocalDate fechaReporte;
+    @NotBlank(message = "El nombre del punto es obligatorio")
+    @Size(max = 100, message = "Máximo 100 caracteres")
+    private String nombre;
 
-    public PuntoCritico() {
-        this.fechaReporte = LocalDate.now();
-        this.estado = "Pendiente";
+    @NotBlank(message = "Debes ingresar una ubicación")
+    private String ubicacion;
+
+    @NotBlank(message = "La descripción no puede estar vacía")
+    private String descripcion;
+
+    private String imagenRuta;
+
+    public PuntoCritico() {}
+
+    public PuntoCritico(String nombre, String ubicacion, String descripcion) {
+        this.nombre = nombre;
+        this.ubicacion = ubicacion;
+        this.descripcion = descripcion;
     }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getBarrio() { return barrio; }
-    public void setBarrio(String barrio) { this.barrio = barrio; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getDireccionReferencia() { return direccionReferencia; }
-    public void setDireccionReferencia(String direccionReferencia) { this.direccionReferencia = direccionReferencia; }
+    public String getUbicacion() { return ubicacion; }
+    public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public String getNivelSeveridad() { return nivelSeveridad; }
-    public void setNivelSeveridad(String nivelSeveridad) { this.nivelSeveridad = nivelSeveridad; }
-
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
-
-    public LocalDate getFechaReporte() { return fechaReporte; }
-    public void setFechaReporte(LocalDate fechaReporte) { this.fechaReporte = fechaReporte; }
+    public String getImagenRuta() { return imagenRuta; }
+    public void setImagenRuta(String imagenRuta) { this.imagenRuta = imagenRuta; }
 }

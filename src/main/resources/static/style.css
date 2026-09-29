@@ -1,32 +1,212 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Reset y variables de diseño */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f8fafc;
+    background-color: #f4f6f9;
+    color: #333333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-.card-hover {
-    transition: all 0.25s ease-in-out;
+/* Header */
+.header-principal {
+    background-color: #1e3d59;
+    color: #ffffff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.card-hover:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+.header-principal h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-::-webkit-scrollbar {
-    width: 6px;
+.nav-link {
+    color: #e8e8e8;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
 }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
+.nav-link:hover, .nav-link.activo {
+    background-color: #17b978;
+    color: #ffffff;
 }
 
-::-webkit-scrollbar-thumb {
-    background: #10b981;
-    border-radius: 10px;
+/* Layout principal */
+.main-container {
+    max-width: 1000px;
+    width: 90%;
+    margin: 2rem auto;
+    flex: 1;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #059669;
+.titulo-pagina {
+    margin-bottom: 1.5rem;
+    color: #1e3d59;
+    font-size: 1.6rem;
+}
+
+/* Alertas */
+.alert-mensaje {
+    padding: 0.8rem 1.2rem;
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+}
+
+/* Tarjetas */
+.card-panel {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom: 2rem;
+}
+
+.card-panel h3 {
+    margin-bottom: 1.2rem;
+    color: #1e3d59;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+}
+
+/* Formularios */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.campo-grupo {
+    display: flex;
+    flex-direction: column;
+}
+
+.campo-grupo.full-width {
+    grid-column: span 2;
+}
+
+.campo-grupo label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #495057;
+}
+
+.campo-input {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.campo-input:focus {
+    border-color: #17b978;
+}
+
+textarea.campo-input {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.texto-error {
+    color: #dc3545;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+}
+
+/* Botones */
+.btn-submit {
+    grid-column: span 2;
+    background-color: #17b978;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 0.5rem;
+}
+
+.btn-submit:hover {
+    background-color: #139a63;
+}
+
+.btn-eliminar {
+    color: #dc3545;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.btn-eliminar:hover {
+    text-decoration: underline;
+}
+
+/* Tablas */
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+.tabla-custom {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+.tabla-custom th, .tabla-custom td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 0.95rem;
+}
+
+.tabla-custom th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+}
+
+.fila-par {
+    background-color: #fbfbfb;
+}
+
+.badge-foto {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.sin-datos {
+    text-align: center;
+    color: #6c757d;
+    padding: 1.5rem 0;
+}
+
+/* Footer */
+.footer-principal {
+    background-color: #1e3d59;
+    color: #a0aab2;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.85rem;
 }
