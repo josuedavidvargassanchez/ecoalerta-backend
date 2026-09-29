@@ -22,6 +22,8 @@ public class PuntoCritico {
     @NotBlank(message = "La descripción no puede estar vacía")
     private String descripcion;
 
+    private String estado = "PENDIENTE";
+
     private String imagenRuta;
 
     public PuntoCritico() {}
@@ -32,6 +34,7 @@ public class PuntoCritico {
         this.descripcion = descripcion;
     }
 
+    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -43,6 +46,9 @@ public class PuntoCritico {
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 
     public String getImagenRuta() { return imagenRuta; }
     public void setImagenRuta(String imagenRuta) { this.imagenRuta = imagenRuta; }

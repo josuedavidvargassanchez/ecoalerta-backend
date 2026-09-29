@@ -4,7 +4,6 @@ import com.ecoalerta.backend.models.PuntoCritico;
 import com.ecoalerta.backend.repositories.PuntoCriticoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -13,17 +12,14 @@ public class PuntoCriticoService {
     @Autowired
     private PuntoCriticoRepository repository;
 
-    public List<PuntoCritico> listarTodos() {
+    public List<PuntoCritico> obtenerTodos() {
         return repository.findAll();
     }
 
     public PuntoCritico guardar(PuntoCritico punto) {
-        return repository.save(punto);
-    }
-
-    public PuntoCritico actualizarEstado(Long id, String nuevoEstado) {
-        PuntoCritico punto = repository.findById(id).orElseThrow();
-        punto.setEstado(nuevoEstado);
+        if (punto.getEstado() == null || punto.getEstado().isEmpty()) {
+            punto.setEstado("PENDIENTE");
+        }
         return repository.save(punto);
     }
 
