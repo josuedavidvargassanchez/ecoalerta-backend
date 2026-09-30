@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoAlerta - Gestión de Puntos Críticos</title>
+    <!-- Carga de CSS limpio -->
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>EcoAlerta</h1>
+        <p class="subtitle">Sistema de Gestión de Puntos Críticos y Monitoreo Ambiental</p>
+
+        <!-- Tarjeta del Formulario -->
+        <div class="form-card">
+            <h2>Registrar Nuevo Punto Crítico</h2>
+            <form th:action="@{/puntos/guardar}" th:object="${puntoNuevo}" method="POST">
+                <div class="form-group">
+                    <label>Nombre del Punto:</label>
+                    <input type="text" th:field="*{nombre}" placeholder="Ej. Acumulación de residuos en sector norte" required />
+                <div class="form-group">
+                    <label>Ubicación:</label>
+                    <input type="text" th:field="*{ubicacion}" placeholder="Ej. Calle 45 con Cra 12" required />
+                </div>
+                <button type="submit">Guardar Registro</button>
+            </form>
+        </div>
+
+        <!-- Sección de la Tabla -->
+        <div class="table-container">
+            <h2>Puntos Críticos Registrados en el Sistema</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Ubicación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="punto : ${puntos}">
+                        <td th:text="${punto.id}">1</td>
+                        <td th:text="${punto.nombre}">Nombre de prueba</td>
+                        <td th:text="${punto.ubicacion}">Ubicación de prueba</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
