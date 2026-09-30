@@ -7,25 +7,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/puntos")
 public class PuntoCriticoController {
 
     @Autowired
     private PuntoCriticoService puntoCriticoService;
 
-    @GetMapping
+    @GetMapping({"/", "/puntos"})
     public String listarPuntos(Model model) {
         model.addAttribute("puntos", puntoCriticoService.obtenerTodos());
         model.addAttribute("puntoNuevo", new PuntoCritico());
         return "index";
     }
 
-    @PostMapping("/guardar")
+    @PostMapping("/puntos/guardar")
     public String guardarPunto(PuntoCritico puntoCritico) {
         puntoCriticoService.guardar(puntoCritico);
-        return "redirect:/puntos";
+        return "redirect:/";
     }
 }

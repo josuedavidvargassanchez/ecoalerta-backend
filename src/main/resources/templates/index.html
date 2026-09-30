@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>EcoAlerta - Gestión de Puntos Críticos</title>
     <!-- Carga de CSS limpio -->
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
+
 <body>
 
     <div class="container">
@@ -18,10 +20,18 @@
             <form th:action="@{/puntos/guardar}" th:object="${puntoNuevo}" method="POST">
                 <div class="form-group">
                     <label>Nombre del Punto:</label>
-                    <input type="text" th:field="*{nombre}" placeholder="Ej. Acumulación de residuos en sector norte" required />
+                    <input type="text" th:field="*{nombre}" placeholder="Ej. Acumulación de residuos en sector norte"
+                        required />
+                </div> <!-- <-- ¡Aquí cerramos el div que faltaba! -->
+
                 <div class="form-group">
                     <label>Ubicación:</label>
                     <input type="text" th:field="*{ubicacion}" placeholder="Ej. Calle 45 con Cra 12" required />
+                </div>
+                <div class="form-group">
+                    <label>Descripción:</label>
+                    <input type="text" th:field="*{descripcion}" placeholder="Ej. Acumulación de basura y malos olores"
+                        required />
                 </div>
                 <button type="submit">Guardar Registro</button>
             </form>
@@ -36,6 +46,7 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Ubicación</th>
+                        <th>Descripción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +54,7 @@
                         <td th:text="${punto.id}">1</td>
                         <td th:text="${punto.nombre}">Nombre de prueba</td>
                         <td th:text="${punto.ubicacion}">Ubicación de prueba</td>
+                        <td th:text="${punto.descripcion}">Descripción de prueba</td>
                     </tr>
                 </tbody>
             </table>
@@ -50,4 +62,5 @@
     </div>
 
 </body>
+
 </html>
