@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza('Nuevo reporte')}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('reportes')}"></header>
+
+    <main class="contenedor contenedor-angosto">
+        <a class="enlace" th:href="@{/reportes}">← Volver a reportes</a>
+
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Nuevo reporte</h1>
+                <p class="subtitulo">Cada ciudadano puede tener hasta 3 reportes abiertos a la vez.</p>
+            </div>
+        </div>
+
+        <form class="panel formulario" th:action="@{/reportes}" th:object="${form}" method="post">
+
+            <div class="alerta alerta-error" th:if="${#fields.hasGlobalErrors()}">
+                <span>⚠️</span>
+                <span th:each="err : ${#fields.globalErrors()}" th:text="${err}">Error</span>
+            </div>
+
+            <div class="campo">
+                <label for="puntoId">Punto crítico</label>
+                <select id="puntoId" th:field="*{puntoId}">
+                    <option value="">— Selecciona un punto —</option>
+                    <option th:each="p : ${puntos}" th:value="${p.id}"
+                            th:text="${p.nombre + ' — ' + p.ubicacion}">Punto</option>
+                </select>
+                <small class="error" th:if="${#fields.hasErrors('puntoId')}" th:errors="*{puntoId}">Error</small>
+            </div>
+
+            <div class="campo">
+                <label for="ciudadanoId">Ciudadano que reporta</label>
+                <select id="ciudadanoId" th:field="*{ciudadanoId}">
+                    <option value="">— Selecciona un ciudadano —</option>
+                    <option th:each="c : ${ciudadanos}" th:value="${c.id}"
+                            th:text="${c.nombre + ' (' + c.email + ')'}">Ciudadano</option>
+                </select>
+                <small class="error" th:if="${#fields.hasErrors('ciudadanoId')}" th:errors="*{ciudadanoId}">Error</small>
+                <small class="texto-suave" th:if="${#lists.isEmpty(ciudadanos)}">
+                    No hay ciudadanos. <a class="enlace" th:href="@{/ciudadanos/nuevo}">Registrar uno</a>
+                </small>
+            </div>
+
+            <div class="campo">
+                <label for="descripcion">¿Qué está pasando?</label>
+                <textarea id="descripcion" rows="4" th:field="*{descripcion}" placeholder="Describe el problema que observaste"></textarea>
+                <small class="error" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}">Error</small>
+            </div>
+
+            <div class="acciones">
+                <button type="submit" class="btn">Enviar reporte</button>
+                <a class="btn btn-claro" th:href="@{/reportes}">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

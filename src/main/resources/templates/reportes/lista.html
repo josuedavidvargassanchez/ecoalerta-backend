@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza('Reportes')}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('reportes')}"></header>
+
+    <main class="contenedor">
+        <div th:replace="~{fragmentos/comunes :: mensajes}"></div>
+
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Reportes</h1>
+                <p class="subtitulo">Un reporte abierto con más de 15 días se considera vencido.</p>
+            </div>
+            <a class="btn" th:href="@{/reportes/nuevo}">＋ Nuevo reporte</a>
+        </div>
+
+        <div class="pestanas">
+            <a th:href="@{/reportes(filtro='abiertos')}" th:classappend="${filtro == 'abiertos'} ? 'activa'">Abiertos</a>
+            <a th:href="@{/reportes(filtro='vencidos')}" th:classappend="${filtro == 'vencidos'} ? 'activa'">Vencidos</a>
+            <a th:href="@{/reportes(filtro='cerrados')}" th:classappend="${filtro == 'cerrados'} ? 'activa'">Cerrados</a>
+            <a class="pestana-derecha" th:href="@{/reportes/vencidos.csv}">⬇ Exportar vencidos (CSV)</a>
+        </div>
+
+        <div class="vacio" th:if="${#lists.isEmpty(reportes)}">
+            <p>No hay reportes en esta lista.</p>
+        </div>
+
+        <section class="panel" th:unless="${#lists.isEmpty(reportes)}">
+            <div class="tabla-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Fecha</th><th>Punto crítico</th><th>Ciudadano</th><th>Descripción</th><th>Estado</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="r : ${reportes}">
+                            <td th:text="${r.fecha()}">2026-01-01</td>
+                            <td><a class="enlace" th:href="@{/puntos/{id}(id=${r.puntoId()})}" th:text="${r.puntoNombre()}">Punto</a></td>
+                            <td><a class="enlace" th:href="@{/ciudadanos/{id}(id=${r.ciudadanoId()})}" th:text="${r.ciudadanoNombre()}">Ciudadano</a></td>
+                            <td th:text="${r.descripcion()}">Descripción</td>
+                            <td>
+                                <span class="chip chip-fijo estado-RESUELTO" th:if="${r.cerrado()}">Cerrado</span>
+                                <span class="chip chip-fijo estado-VENCIDO" th:if="${r.vencido()}">Vencido</span>
+                                <span class="chip chip-fijo estado-EN_ATENCION" th:if="${!r.cerrado() and !r.vencido()}">Abierto</span>
+                            </td>
+                            <td class="celda-accion">
+                                <form th:if="${!r.cerrado()}" th:action="@{/reportes/{id}/cerrar(id=${r.id()})}" method="post">
+                                    <button type="submit" class="btn btn-pequeno btn-claro">Cerrar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

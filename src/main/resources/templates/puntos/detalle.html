@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza(${punto.nombre})}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('puntos')}"></header>
+
+    <main class="contenedor">
+        <div th:replace="~{fragmentos/comunes :: mensajes}"></div>
+
+        <a class="enlace" th:href="@{/puntos}">← Volver al catálogo</a>
+
+        <section class="ficha">
+            <div class="ficha-imagen">
+                <img th:src="${punto.imagenRuta != null} ? @{/subidas/{f}(f=${punto.imagenRuta})} : @{/img/sin-imagen.svg}"
+                     th:alt="${punto.nombre}" alt="Imagen del punto">
+            </div>
+
+            <div class="ficha-datos">
+                <div class="fila-chips">
+                    <span class="chip chip-fijo" th:classappend="${'estado-' + punto.estado}" th:text="${punto.estado.etiqueta}">Pendiente</span>
+                    <span class="etiqueta" th:text="${punto.categoria?.nombre} ?: 'Sin categoría'">Categoría</span>
+                </div>
+                <h1 th:text="${punto.nombre}">Nombre del punto</h1>
+                <p class="ubicacion">📍 <span th:text="${punto.ubicacion}">Ubicación</span></p>
+                <p class="descripcion" th:text="${punto.descripcion}">Descripción</p>
+                <p class="texto-suave">Registrado el <b th:text="${punto.fechaRegistro}">2026-01-01</b></p>
+
+                <h3 class="subtitulo-seccion">Entidades responsables</h3>
+                <p class="texto-suave" th:if="${#sets.isEmpty(punto.entidades)}">Aún no hay entidades asignadas.</p>
+                <ul class="chips" th:unless="${#sets.isEmpty(punto.entidades)}">
+                    <li class="chip-entidad" th:each="e : ${punto.entidades}" th:text="${e.nombre}">Entidad</li>
+                </ul>
+
+                <div class="acciones">
+                    <a class="btn" th:href="@{/puntos/{id}/editar(id=${punto.id})}">✏️ Editar</a>
+                    <a class="btn btn-claro" th:href="@{/reportes/nuevo(punto=${punto.id})}">＋ Nuevo reporte</a>
+                    <form th:action="@{/puntos/{id}/eliminar(id=${punto.id})}" method="post">
+                        <button type="submit" class="btn btn-peligro">🗑 Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Cambiar estado</h2>
+            <form class="fila-form" th:action="@{/puntos/{id}/estado(id=${punto.id})}" method="post">
+                <select name="estado">
+                    <option th:each="e : ${estados}" th:value="${e}" th:text="${e.etiqueta}"
+                            th:selected="${e == punto.estado}">Estado</option>
+                </select>
+                <button type="submit" class="btn">Actualizar estado</button>
+            </form>
+            <p class="texto-suave">Un punto solo puede marcarse como resuelto cuando no tiene reportes abiertos.</p>
+        </section>
+
+        <section class="panel">
+            <div class="seccion-titulo">
+                <h2>Reportes de este punto</h2>
+                <a class="enlace" th:href="@{/reportes/nuevo(punto=${punto.id})}">＋ Agregar reporte</a>
+            </div>
+
+            <p class="texto-suave" th:if="${#lists.isEmpty(reportes)}">Nadie ha reportado este punto todavía.</p>
+
+            <div class="tabla-wrap" th:unless="${#lists.isEmpty(reportes)}">
+                <table>
+                    <thead>
+                        <tr><th>Fecha</th><th>Ciudadano</th><th>Descripción</th><th>Estado</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="r : ${reportes}">
+                            <td th:text="${r.fecha()}">2026-01-01</td>
+                            <td><a class="enlace" th:href="@{/ciudadanos/{id}(id=${r.ciudadanoId()})}" th:text="${r.ciudadanoNombre()}">Ciudadano</a></td>
+                            <td th:text="${r.descripcion()}">Descripción</td>
+                            <td>
+                                <span class="chip chip-fijo estado-RESUELTO" th:if="${r.cerrado()}">Cerrado</span>
+                                <span class="chip chip-fijo estado-VENCIDO" th:if="${r.vencido()}">Vencido</span>
+                                <span class="chip chip-fijo estado-EN_ATENCION" th:if="${!r.cerrado() and !r.vencido()}">Abierto</span>
+                            </td>
+                            <td class="celda-accion">
+                                <form th:if="${!r.cerrado()}" th:action="@{/reportes/{id}/cerrar(id=${r.id()})}" method="post">
+                                    <button type="submit" class="btn btn-pequeno btn-claro">Cerrar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

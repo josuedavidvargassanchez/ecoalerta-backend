@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza('Solicitud no válida')}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('')}"></header>
+
+    <main class="contenedor">
+        <section class="error-pagina">
+            <div class="error-codigo" th:text="${status} ?: '400'">400</div>
+            <h1>No pudimos procesar la solicitud</h1>
+            <p class="texto-suave">Revisa la dirección o vuelve al inicio para continuar.</p>
+            <div class="acciones centrado">
+                <a class="btn" th:href="@{/}">Ir al inicio</a>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza(${titulo})}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('ciudadanos')}"></header>
+
+    <main class="contenedor contenedor-angosto">
+        <a class="enlace" th:href="@{/ciudadanos}">← Volver a ciudadanos</a>
+
+        <div class="encabezado-pagina">
+            <div>
+                <h1 th:text="${titulo}">Registrar ciudadano</h1>
+                <p class="subtitulo">El correo debe ser único en el sistema.</p>
+            </div>
+        </div>
+
+        <form class="panel formulario"
+              th:action="${ciudadanoId == null} ? @{/ciudadanos} : @{/ciudadanos/{id}(id=${ciudadanoId})}"
+              th:object="${form}" method="post">
+
+            <div class="alerta alerta-error" th:if="${#fields.hasGlobalErrors()}">
+                <span>⚠️</span>
+                <span th:each="err : ${#fields.globalErrors()}" th:text="${err}">Error</span>
+            </div>
+
+            <div class="campo">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej. María Gómez">
+                <small class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</small>
+            </div>
+
+            <div class="campo">
+                <label for="email">Correo electrónico</label>
+                <input type="text" id="email" th:field="*{email}" placeholder="maria@correo.com">
+                <small class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</small>
+            </div>
+
+            <div class="dos-columnas">
+                <div class="campo">
+                    <label for="telefono">Teléfono (opcional)</label>
+                    <input type="text" id="telefono" th:field="*{telefono}" placeholder="3001112233">
+                    <small class="error" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error</small>
+                </div>
+                <div class="campo">
+                    <label for="direccion">Dirección (opcional)</label>
+                    <input type="text" id="direccion" th:field="*{direccion}" placeholder="Calle 10 # 5-20">
+                    <small class="error" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}">Error</small>
+                </div>
+            </div>
+
+            <div class="acciones">
+                <button type="submit" class="btn" th:text="${ciudadanoId == null} ? 'Registrar ciudadano' : 'Guardar cambios'">Guardar</button>
+                <a class="btn btn-claro" th:href="@{/ciudadanos}">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

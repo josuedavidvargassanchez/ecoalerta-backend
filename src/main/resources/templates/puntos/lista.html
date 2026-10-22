@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza('Puntos críticos')}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('puntos')}"></header>
+
+    <main class="contenedor">
+        <div th:replace="~{fragmentos/comunes :: mensajes}"></div>
+
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Puntos críticos</h1>
+                <p class="subtitulo">Catálogo de lugares que requieren atención ambiental.</p>
+            </div>
+            <a class="btn" th:href="@{/puntos/nuevo}">＋ Nuevo punto</a>
+        </div>
+
+        <!-- Búsqueda y filtros (GET: la URL se puede compartir) -->
+        <form class="filtros" th:action="@{/puntos}" method="get">
+            <input type="text" name="q" th:value="${q}" placeholder="🔍 Buscar por nombre o ubicación">
+            <select name="estado">
+                <option value="">Todos los estados</option>
+                <option th:each="e : ${estados}" th:value="${e}" th:text="${e.etiqueta}"
+                        th:selected="${e == estadoSel}">Estado</option>
+            </select>
+            <select name="categoria">
+                <option value="">Todas las categorías</option>
+                <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}"
+                        th:selected="${c.id == categoriaSel}">Categoría</option>
+            </select>
+            <button type="submit" class="btn">Filtrar</button>
+            <a class="btn btn-claro" th:href="@{/puntos}">Limpiar</a>
+        </form>
+
+        <p class="contador">
+            <b th:text="${resultado.totalElements}">0</b> punto(s) encontrado(s)
+        </p>
+
+        <div class="vacio" th:if="${#lists.isEmpty(resultado.content)}">
+            <p>No hay puntos críticos que coincidan con la búsqueda.</p>
+            <a class="btn" th:href="@{/puntos/nuevo}">Registrar un punto</a>
+        </div>
+
+        <div class="grid" th:unless="${#lists.isEmpty(resultado.content)}">
+            <article class="tarjeta" th:each="p : ${resultado.content}">
+                <a class="tarjeta-img" th:href="@{/puntos/{id}(id=${p.id})}">
+                    <img th:src="${p.imagenRuta != null} ? @{/subidas/{f}(f=${p.imagenRuta})} : @{/img/sin-imagen.svg}"
+                         th:alt="${p.nombre}" alt="Imagen del punto">
+                    <span class="chip" th:classappend="${'estado-' + p.estado}" th:text="${p.estado.etiqueta}">Pendiente</span>
+                </a>
+                <div class="tarjeta-cuerpo">
+                    <span class="etiqueta" th:text="${p.categoria?.nombre} ?: 'Sin categoría'">Categoría</span>
+                    <h3><a th:href="@{/puntos/{id}(id=${p.id})}" th:text="${p.nombre}">Nombre del punto</a></h3>
+                    <p class="ubicacion">📍 <span th:text="${p.ubicacion}">Ubicación</span></p>
+                    <p class="texto-suave" th:text="${#strings.abbreviate(p.descripcion, 90)}">Descripción</p>
+                </div>
+                <div class="tarjeta-pie">
+                    <a class="enlace" th:href="@{/puntos/{id}(id=${p.id})}">Ver ficha →</a>
+                    <a class="enlace" th:href="@{/puntos/{id}/editar(id=${p.id})}">Editar</a>
+                </div>
+            </article>
+        </div>
+
+        <!-- Paginación -->
+        <nav class="paginacion" th:if="${resultado.totalPages > 1}">
+            <a class="btn btn-claro" th:if="${!resultado.first}"
+               th:href="@{/puntos(q=${q},estado=${estadoSel},categoria=${categoriaSel},pagina=${resultado.number - 1})}">← Anterior</a>
+            <span>Página <b th:text="${resultado.number + 1}">1</b> de <b th:text="${resultado.totalPages}">1</b></span>
+            <a class="btn btn-claro" th:if="${!resultado.last}"
+               th:href="@{/puntos(q=${q},estado=${estadoSel},categoria=${categoriaSel},pagina=${resultado.number + 1})}">Siguiente →</a>
+        </nav>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

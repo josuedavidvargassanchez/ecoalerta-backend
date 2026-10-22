@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza('No encontrado')}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('')}"></header>
+
+    <main class="contenedor">
+        <section class="error-pagina">
+            <div class="error-codigo">404</div>
+            <h1>No encontramos lo que buscas</h1>
+            <p class="texto-suave" th:text="${mensaje} ?: 'La página o el registro que intentas abrir no existe.'">La página no existe.</p>
+            <div class="acciones centrado">
+                <a class="btn" th:href="@{/}">Ir al inicio</a>
+                <a class="btn btn-claro" th:href="@{/puntos}">Ver puntos críticos</a>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

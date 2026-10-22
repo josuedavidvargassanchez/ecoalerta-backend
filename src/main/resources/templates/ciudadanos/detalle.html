@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza(${ciudadano.nombre})}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('ciudadanos')}"></header>
+
+    <main class="contenedor">
+        <div th:replace="~{fragmentos/comunes :: mensajes}"></div>
+
+        <a class="enlace" th:href="@{/ciudadanos}">← Volver a ciudadanos</a>
+
+        <section class="panel perfil">
+            <div class="avatar" th:text="${#strings.substring(ciudadano.nombre, 0, 1)}">C</div>
+            <div class="perfil-datos">
+                <h1 th:text="${ciudadano.nombre}">Nombre</h1>
+                <p class="texto-suave">✉️ <span th:text="${ciudadano.email}">correo</span></p>
+                <p class="texto-suave" th:if="${ciudadano.contacto != null}">
+                    📞 <span th:text="${ciudadano.contacto.telefono} ?: 'Sin teléfono'">Teléfono</span>
+                    &nbsp;·&nbsp;
+                    🏠 <span th:text="${ciudadano.contacto.direccion} ?: 'Sin dirección'">Dirección</span>
+                </p>
+                <div class="acciones">
+                    <a class="btn" th:href="@{/ciudadanos/{id}/editar(id=${ciudadano.id})}">✏️ Editar</a>
+                    <form th:action="@{/ciudadanos/{id}/eliminar(id=${ciudadano.id})}" method="post">
+                        <button type="submit" class="btn btn-peligro">🗑 Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="seccion-titulo">
+                <h2>Historial de reportes</h2>
+                <a class="enlace" th:href="@{/reportes/nuevo}">＋ Nuevo reporte</a>
+            </div>
+
+            <p class="texto-suave" th:if="${#lists.isEmpty(reportes)}">Este ciudadano aún no ha hecho reportes.</p>
+
+            <div class="tabla-wrap" th:unless="${#lists.isEmpty(reportes)}">
+                <table>
+                    <thead>
+                        <tr><th>Fecha</th><th>Punto crítico</th><th>Descripción</th><th>Estado</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="r : ${reportes}">
+                            <td th:text="${r.fecha()}">2026-01-01</td>
+                            <td><a class="enlace" th:href="@{/puntos/{id}(id=${r.puntoId()})}" th:text="${r.puntoNombre()}">Punto</a></td>
+                            <td th:text="${r.descripcion()}">Descripción</td>
+                            <td>
+                                <span class="chip chip-fijo estado-RESUELTO" th:if="${r.cerrado()}">Cerrado</span>
+                                <span class="chip chip-fijo estado-VENCIDO" th:if="${r.vencido()}">Vencido</span>
+                                <span class="chip chip-fijo estado-EN_ATENCION" th:if="${!r.cerrado() and !r.vencido()}">Abierto</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza(${titulo})}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('puntos')}"></header>
+
+    <main class="contenedor contenedor-angosto">
+        <div th:replace="~{fragmentos/comunes :: mensajes}"></div>
+
+        <a class="enlace" th:href="@{/puntos}">← Volver al catálogo</a>
+
+        <div class="encabezado-pagina">
+            <div>
+                <h1 th:text="${titulo}">Registrar punto crítico</h1>
+                <p class="subtitulo">Completa los datos del lugar que necesita atención.</p>
+            </div>
+        </div>
+
+        <form class="panel formulario"
+              th:action="${puntoId == null} ? @{/puntos} : @{/puntos/{id}(id=${puntoId})}"
+              th:object="${form}" method="post" enctype="multipart/form-data">
+
+            <div class="alerta alerta-error" th:if="${#fields.hasGlobalErrors()}">
+                <span>⚠️</span>
+                <span th:each="err : ${#fields.globalErrors()}" th:text="${err}">Error</span>
+            </div>
+
+            <div class="campo">
+                <label for="nombre">Nombre del punto</label>
+                <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej. Acumulación de residuos en sector norte">
+                <small class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</small>
+            </div>
+
+            <div class="campo">
+                <label for="ubicacion">Ubicación</label>
+                <input type="text" id="ubicacion" th:field="*{ubicacion}" placeholder="Ej. Calle 45 con Cra 12">
+                <small class="error" th:if="${#fields.hasErrors('ubicacion')}" th:errors="*{ubicacion}">Error</small>
+            </div>
+
+            <div class="campo">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" rows="4" th:field="*{descripcion}" placeholder="Cuenta qué está pasando en este lugar"></textarea>
+                <small class="error" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}">Error</small>
+            </div>
+
+            <div class="dos-columnas">
+                <div class="campo">
+                    <label for="categoriaId">Categoría</label>
+                    <select id="categoriaId" th:field="*{categoriaId}">
+                        <option value="">— Selecciona una categoría —</option>
+                        <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}">Categoría</option>
+                    </select>
+                    <small class="error" th:if="${#fields.hasErrors('categoriaId')}" th:errors="*{categoriaId}">Error</small>
+                </div>
+
+                <div class="campo" th:if="${puntoId != null}">
+                    <label for="estado">Estado</label>
+                    <select id="estado" th:field="*{estado}">
+                        <option th:each="e : ${estados}" th:value="${e}" th:text="${e.etiqueta}">Estado</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label>Entidades responsables</label>
+                <div class="opciones">
+                    <label class="opcion" th:each="e : ${entidades}">
+                        <input type="checkbox" th:field="*{entidadIds}" th:value="${e.id}">
+                        <span th:text="${e.nombre}">Entidad</span>
+                    </label>
+                </div>
+                <small class="texto-suave" th:if="${#lists.isEmpty(entidades)}">
+                    No hay entidades creadas. <a class="enlace" th:href="@{/entidades}">Crear una</a>
+                </small>
+            </div>
+
+            <div class="campo">
+                <label for="imagen">Imagen del lugar (opcional, máximo 5 MB)</label>
+                <div class="imagen-actual" th:if="${imagenActual != null}">
+                    <img th:src="@{/subidas/{f}(f=${imagenActual})}" alt="Imagen actual">
+                    <span class="texto-suave">Imagen actual. Sube otra para reemplazarla.</span>
+                </div>
+                <input type="file" id="imagen" name="imagen" accept="image/png,image/jpeg,image/gif,image/webp">
+            </div>
+
+            <div class="acciones">
+                <button type="submit" class="btn" th:text="${puntoId == null} ? 'Guardar punto' : 'Guardar cambios'">Guardar</button>
+                <a class="btn btn-claro" th:href="@{/puntos}">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

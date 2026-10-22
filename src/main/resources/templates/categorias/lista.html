@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza('Categorías')}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('categorias')}"></header>
+
+    <main class="contenedor">
+        <div th:replace="~{fragmentos/comunes :: mensajes}"></div>
+
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Categorías</h1>
+                <p class="subtitulo">Clasifica los puntos críticos por tipo de problema ambiental.</p>
+            </div>
+        </div>
+
+        <div class="dos-paneles">
+            <form class="panel formulario"
+                  th:action="${editandoId == null} ? @{/categorias} : @{/categorias/{id}(id=${editandoId})}"
+                  th:object="${form}" method="post">
+                <h2 th:text="${editandoId == null} ? 'Nueva categoría' : 'Editar categoría'">Nueva categoría</h2>
+
+                <div class="alerta alerta-error" th:if="${#fields.hasGlobalErrors()}">
+                    <span>⚠️</span>
+                    <span th:each="err : ${#fields.globalErrors()}" th:text="${err}">Error</span>
+                </div>
+
+                <div class="campo">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej. Calidad del aire">
+                    <small class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</small>
+                </div>
+
+                <div class="campo">
+                    <label for="descripcion">Descripción (opcional)</label>
+                    <textarea id="descripcion" rows="3" th:field="*{descripcion}" placeholder="¿Qué incluye esta categoría?"></textarea>
+                    <small class="error" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}">Error</small>
+                </div>
+
+                <div class="acciones">
+                    <button type="submit" class="btn" th:text="${editandoId == null} ? 'Crear categoría' : 'Guardar cambios'">Guardar</button>
+                    <a class="btn btn-claro" th:if="${editandoId != null}" th:href="@{/categorias}">Cancelar</a>
+                </div>
+            </form>
+
+            <section class="panel">
+                <h2>Categorías registradas</h2>
+                <p class="texto-suave" th:if="${#lists.isEmpty(categorias)}">Aún no hay categorías.</p>
+                <div class="tabla-wrap" th:unless="${#lists.isEmpty(categorias)}">
+                    <table>
+                        <thead>
+                            <tr><th>Categoría</th><th>Puntos</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="c : ${categorias}">
+                                <td>
+                                    <b th:text="${c.nombre()}">Nombre</b>
+                                    <div class="texto-suave" th:text="${c.descripcion()}">Descripción</div>
+                                </td>
+                                <td><span class="contador-pill" th:text="${c.total()}">0</span></td>
+                                <td class="celda-accion">
+                                    <a class="btn btn-pequeno btn-claro" th:href="@{/categorias/{id}/editar(id=${c.id()})}">Editar</a>
+                                    <form th:action="@{/categorias/{id}/eliminar(id=${c.id()})}" method="post">
+                                        <button type="submit" class="btn btn-pequeno btn-peligro">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

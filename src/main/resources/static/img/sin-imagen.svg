@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-label="Sin imagen">
+  <defs>
+    <linearGradient id="fondo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d1fae5"/>
+      <stop offset="1" stop-color="#a7f3d0"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#fondo)"/>
+  <circle cx="540" cy="70" r="120" fill="#ffffff" opacity="0.35"/>
+  <circle cx="90" cy="360" r="140" fill="#10b981" opacity="0.18"/>
+  <g transform="translate(320 200)" fill="none" stroke="#047857" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-60 50 C-60 -30 -10 -70 60 -60 C70 10 30 60 -50 60 Z" fill="#34d399" fill-opacity="0.55"/>
+    <path d="M-60 60 C-30 20 0 -10 40 -40"/>
+  </g>
+  <text x="320" y="340" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#047857" opacity="0.8">Sin imagen</text>
+</svg>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza('Inicio')}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('inicio')}"></header>
+
+    <main class="contenedor">
+        <div th:replace="~{fragmentos/comunes :: mensajes}"></div>
+
+        <section class="hero">
+            <div class="hero-texto">
+                <span class="hero-etiqueta">Monitoreo ambiental ciudadano</span>
+                <h1>Cuidemos juntos los puntos críticos de la ciudad</h1>
+                <p>Registra, reporta y da seguimiento a los lugares que más necesitan atención ambiental, y coordina a las entidades responsables.</p>
+                <div class="hero-acciones">
+                    <a class="btn btn-blanco" th:href="@{/puntos/nuevo}">＋ Registrar punto crítico</a>
+                    <a class="btn btn-fantasma" th:href="@{/reportes/nuevo}">Crear un reporte</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="estadisticas">
+            <a class="stat stat-ambar" th:href="@{/puntos(estado='PENDIENTE')}">
+                <span class="stat-numero" th:text="${resumen.puntosPendientes()}">0</span>
+                <span class="stat-texto">Puntos pendientes</span>
+            </a>
+            <a class="stat stat-azul" th:href="@{/puntos(estado='EN_ATENCION')}">
+                <span class="stat-numero" th:text="${resumen.puntosEnAtencion()}">0</span>
+                <span class="stat-texto">En atención</span>
+            </a>
+            <a class="stat stat-verde" th:href="@{/puntos(estado='RESUELTO')}">
+                <span class="stat-numero" th:text="${resumen.puntosResueltos()}">0</span>
+                <span class="stat-texto">Resueltos</span>
+            </a>
+            <a class="stat stat-gris" th:href="@{/reportes}">
+                <span class="stat-numero" th:text="${resumen.reportesAbiertos()}">0</span>
+                <span class="stat-texto">Reportes abiertos</span>
+            </a>
+            <a class="stat stat-rojo" th:href="@{/reportes(filtro='vencidos')}">
+                <span class="stat-numero" th:text="${resumen.reportesVencidos()}">0</span>
+                <span class="stat-texto">Reportes vencidos</span>
+            </a>
+        </section>
+
+        <section>
+            <div class="seccion-titulo">
+                <h2>Últimos puntos registrados</h2>
+                <a class="enlace" th:href="@{/puntos}">Ver todos →</a>
+            </div>
+
+            <div class="vacio" th:if="${#lists.isEmpty(ultimos)}">
+                <p>Todavía no hay puntos críticos registrados.</p>
+                <a class="btn" th:href="@{/puntos/nuevo}">Registrar el primero</a>
+            </div>
+
+            <div class="grid" th:unless="${#lists.isEmpty(ultimos)}">
+                <article class="tarjeta" th:each="p : ${ultimos}">
+                    <a class="tarjeta-img" th:href="@{/puntos/{id}(id=${p.id})}">
+                        <img th:src="${p.imagenRuta != null} ? @{/subidas/{f}(f=${p.imagenRuta})} : @{/img/sin-imagen.svg}"
+                             th:alt="${p.nombre}" alt="Imagen del punto">
+                        <span class="chip" th:classappend="${'estado-' + p.estado}" th:text="${p.estado.etiqueta}">Pendiente</span>
+                    </a>
+                    <div class="tarjeta-cuerpo">
+                        <span class="etiqueta" th:text="${p.categoria?.nombre} ?: 'Sin categoría'">Categoría</span>
+                        <h3><a th:href="@{/puntos/{id}(id=${p.id})}" th:text="${p.nombre}">Nombre del punto</a></h3>
+                        <p class="ubicacion">📍 <span th:text="${p.ubicacion}">Ubicación</span></p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

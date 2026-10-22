@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Cabeza con título por parámetro: cada página tiene el suyo sin repetir el resto -->
+<head th:fragment="cabeza(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' · EcoAlerta'">EcoAlerta</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+    <!-- Cabecera y menú: la pestaña activa se marca con th:classappend -->
+    <header class="topbar" th:fragment="cabecera(activo)">
+        <div class="topbar-inner">
+            <a class="marca" th:href="@{/}">
+                <span class="marca-icono">🌿</span>
+                <span>Eco<b>Alerta</b></span>
+            </a>
+            <nav class="menu">
+                <a th:href="@{/}" th:classappend="${activo == 'inicio'} ? 'activo'">Inicio</a>
+                <a th:href="@{/puntos}" th:classappend="${activo == 'puntos'} ? 'activo'">Puntos críticos</a>
+                <a th:href="@{/reportes}" th:classappend="${activo == 'reportes'} ? 'activo'">Reportes</a>
+                <a th:href="@{/ciudadanos}" th:classappend="${activo == 'ciudadanos'} ? 'activo'">Ciudadanos</a>
+                <a th:href="@{/categorias}" th:classappend="${activo == 'categorias'} ? 'activo'">Categorías</a>
+                <a th:href="@{/entidades}" th:classappend="${activo == 'entidades'} ? 'activo'">Entidades</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mensajes flash (éxito / error) que sobreviven a la redirección -->
+    <div th:fragment="mensajes">
+        <div class="alerta alerta-ok" th:if="${mensaje}">
+            <span>✅</span> <span th:text="${mensaje}">Operación realizada</span>
+        </div>
+        <div class="alerta alerta-error" th:if="${error}">
+            <span>⚠️</span> <span th:text="${error}">Ocurrió un problema</span>
+        </div>
+    </div>
+
+    <footer class="pie" th:fragment="pie">
+        <p>🌱 EcoAlerta · Sistema de Gestión de Puntos Críticos y Monitoreo Ambiental</p>
+    </footer>
+
+</body>
+
+</html>

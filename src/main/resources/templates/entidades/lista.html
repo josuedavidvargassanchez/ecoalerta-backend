@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza('Entidades responsables')}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('entidades')}"></header>
+
+    <main class="contenedor">
+        <div th:replace="~{fragmentos/comunes :: mensajes}"></div>
+
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Entidades responsables</h1>
+                <p class="subtitulo">Organizaciones que atienden los puntos críticos.</p>
+            </div>
+        </div>
+
+        <div class="dos-paneles">
+            <form class="panel formulario"
+                  th:action="${editandoId == null} ? @{/entidades} : @{/entidades/{id}(id=${editandoId})}"
+                  th:object="${form}" method="post">
+                <h2 th:text="${editandoId == null} ? 'Nueva entidad' : 'Editar entidad'">Nueva entidad</h2>
+
+                <div class="alerta alerta-error" th:if="${#fields.hasGlobalErrors()}">
+                    <span>⚠️</span>
+                    <span th:each="err : ${#fields.globalErrors()}" th:text="${err}">Error</span>
+                </div>
+
+                <div class="campo">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej. Secretaría de Ambiente">
+                    <small class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</small>
+                </div>
+
+                <div class="campo">
+                    <label for="tipo">Tipo (opcional)</label>
+                    <input type="text" id="tipo" th:field="*{tipo}" placeholder="Ej. Gubernamental, ONG, Servicio público">
+                    <small class="error" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}">Error</small>
+                </div>
+
+                <div class="campo">
+                    <label for="correo">Correo de contacto (opcional)</label>
+                    <input type="text" id="correo" th:field="*{correo}" placeholder="contacto@entidad.org">
+                    <small class="error" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">Error</small>
+                </div>
+
+                <div class="acciones">
+                    <button type="submit" class="btn" th:text="${editandoId == null} ? 'Crear entidad' : 'Guardar cambios'">Guardar</button>
+                    <a class="btn btn-claro" th:if="${editandoId != null}" th:href="@{/entidades}">Cancelar</a>
+                </div>
+            </form>
+
+            <section class="panel">
+                <h2>Entidades registradas</h2>
+                <p class="texto-suave" th:if="${#lists.isEmpty(entidades)}">Aún no hay entidades.</p>
+                <div class="tabla-wrap" th:unless="${#lists.isEmpty(entidades)}">
+                    <table>
+                        <thead>
+                            <tr><th>Entidad</th><th>Puntos</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="e : ${entidades}">
+                                <td>
+                                    <b th:text="${e.nombre()}">Nombre</b>
+                                    <div class="texto-suave">
+                                        <span th:text="${e.tipo()}">Tipo</span>
+                                        <span th:if="${e.correo() != null}"> · <span th:text="${e.correo()}">correo</span></span>
+                                    </div>
+                                </td>
+                                <td><span class="contador-pill" th:text="${e.total()}">0</span></td>
+                                <td class="celda-accion">
+                                    <a class="btn btn-pequeno btn-claro" th:href="@{/entidades/{id}/editar(id=${e.id()})}">Editar</a>
+                                    <form th:action="@{/entidades/{id}/eliminar(id=${e.id()})}" method="post">
+                                        <button type="submit" class="btn btn-pequeno btn-peligro">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>

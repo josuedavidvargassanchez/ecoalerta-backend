@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: cabeza('Error del servidor')}"></head>
+
+<body>
+    <header th:replace="~{fragmentos/comunes :: cabecera('')}"></header>
+
+    <main class="contenedor">
+        <section class="error-pagina">
+            <div class="error-codigo">500</div>
+            <h1>Algo salió mal de nuestro lado</h1>
+            <p class="texto-suave">Ocurrió un error inesperado. Inténtalo de nuevo en unos segundos.</p>
+            <div class="acciones centrado">
+                <a class="btn" th:href="@{/}">Ir al inicio</a>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragmentos/comunes :: pie}"></footer>
+</body>
+</html>
